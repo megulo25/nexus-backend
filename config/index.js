@@ -1,4 +1,5 @@
 require('dotenv').config();
+const path = require('path');
 
 module.exports = {
   port: process.env.PORT || 3000,
@@ -15,5 +16,10 @@ module.exports = {
       windowMs: parseInt(process.env.LOGIN_RATE_LIMIT_WINDOW_MS, 10) || 15 * 60 * 1000, // 15 minutes
       max: parseInt(process.env.LOGIN_RATE_LIMIT_MAX, 10) || 5, // 5 attempts per window
     },
+  },
+
+  paths: {
+    songs: path.resolve(process.env.SONGS_PATH || './songs'),
+    playlists: path.resolve(process.env.PLAYLISTS_PATH || './playlists'),
   },
 };

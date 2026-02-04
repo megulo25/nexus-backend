@@ -43,3 +43,7 @@ build/
 # Temp files
 server.log
 nohup.out
+
+# Media and playlist source files
+playlists/
+songs/

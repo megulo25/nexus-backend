@@ -7,6 +7,7 @@
     "start": "node app.js",
     "dev": "node --watch app.js",
     "seed:users": "node scripts/seedUsers.js",
+    "import:playlists": "node scripts/importPlaylists.js",
     "test": "echo \"Error: no test specified\" && exit 1"
   },
   "keywords": [],
@@ -15,6 +16,7 @@
   "type": "commonjs",
   "packageManager": "yarn@4.9.1+sha512.f95ce356460e05be48d66401c1ae64ef84d163dd689964962c6888a9810865e39097a5e9de748876c2e0bf89b232d583c33982773e9903ae7a76257270986538",
   "dependencies": {
+    "archiver": "^7.0.1",
     "bcrypt": "^6.0.0",
     "cors": "^2.8.6",
     "dotenv": "^17.2.3",
@@ -23,6 +25,8 @@
     "express-validator": "^7.3.1",
     "helmet": "^8.1.0",
     "jsonwebtoken": "^9.0.3",
+    "mime-types": "^3.0.2",
+    "music-metadata": "^11.11.2",
     "uuid": "^13.0.0"
   }
 }

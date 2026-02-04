@@ -4,6 +4,8 @@ const cors = require('cors');
 
 const config = require('./config');
 const authRoutes = require('./routes/auth');
+const trackRoutes = require('./routes/tracks');
+const playlistRoutes = require('./routes/playlists');
 const { authenticateToken } = require('./middleware/authMiddleware');
 const { cleanupExpiredEntries } = require('./models/tokenBlocklist');
 
@@ -21,7 +23,8 @@ app.use(helmet());
 app.use(cors({
   origin: '*', // Allow all origins for mobile apps
   methods: ['GET', 'POST', 'PUT', 'DELETE', 'OPTIONS'],
-  allowedHeaders: ['Content-Type', 'Authorization'],
+  allowedHeaders: ['Content-Type', 'Authorization', 'Range'],
+  exposedHeaders: ['Content-Range', 'Accept-Ranges', 'Content-Length', 'Content-Disposition'],
 }));
 
 // ===========================================
@@ -49,16 +52,11 @@ app.get('/health', (req, res) => {
 // Auth routes (public)
 app.use('/auth', authRoutes);
 
-// Protected route example
-app.get('/protected', authenticateToken, (req, res) => {
-  res.json({
-    success: true,
-    data: {
-      message: 'You have access to protected content!',
-      user: req.user,
-    },
-  });
-});
+// Track routes (protected - auth middleware applied in router)
+app.use('/tracks', trackRoutes);
+
+// Playlist routes (protected - auth middleware applied in router)
+app.use('/playlists', playlistRoutes);
 
 // ===========================================
 // 404 Handler
