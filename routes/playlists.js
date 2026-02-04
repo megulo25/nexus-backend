@@ -89,12 +89,12 @@ router.get('/:id', (req, res) => {
     }
 
     // Parse track pagination params
-    const trackPage = parseInt(req.query.trackPage, 10) || 1;
-    const trackLimit = Math.min(parseInt(req.query.trackLimit, 10) || 50, 100);
+    const page = parseInt(req.query.page, 10) || 1;
+    const limit = Math.min(parseInt(req.query.limit, 10) || 50, 100);
 
     // Get paginated tracks
     const allTracks = findByIds(playlist.trackIds);
-    const paginatedTracks = paginate(allTracks, trackPage, trackLimit);
+    const paginatedTracks = paginate(allTracks, page, limit);
 
     res.json({
       success: true,
