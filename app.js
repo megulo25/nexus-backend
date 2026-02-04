@@ -1,6 +1,7 @@
 const express = require('express');
 const helmet = require('helmet');
 const cors = require('cors');
+const morgan = require('morgan');
 
 const config = require('./config');
 const authRoutes = require('./routes/auth');
@@ -10,6 +11,14 @@ const { authenticateToken } = require('./middleware/authMiddleware');
 const { cleanupExpiredEntries } = require('./models/tokenBlocklist');
 
 const app = express();
+
+// ===========================================
+// Logging Middleware (development only)
+// ===========================================
+
+if (process.env.NODE_ENV !== 'production') {
+  app.use(morgan('dev'));
+}
 
 // ===========================================
 // Security Middleware
