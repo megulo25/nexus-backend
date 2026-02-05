@@ -91,10 +91,22 @@ router.get('/:id', (req, res) => {
     // Parse track pagination params
     const page = parseInt(req.query.page, 10) || 1;
     const limit = Math.min(parseInt(req.query.limit, 10) || 50, 100);
+    const search = (req.query.search || '').trim().toLowerCase();
 
-    // Get paginated tracks
+    // Get all tracks for this playlist
     const allTracks = findByIds(playlist.trackIds);
-    const paginatedTracks = paginate(allTracks, page, limit);
+
+    // Filter tracks by search query (case-insensitive match on trackName or artist)
+    const filteredTracks = search
+      ? allTracks.filter(
+        (track) =>
+          track.trackName.toLowerCase().includes(search) ||
+          track.artist.toLowerCase().includes(search)
+      )
+      : allTracks;
+
+    // Paginate filtered results
+    const paginatedTracks = paginate(filteredTracks, page, limit);
 
     res.json({
       success: true,
