@@ -98,7 +98,7 @@ function findByIds(ids) {
  * @param {string} options.search - Optional search query
  * @returns {Object} Paginated result with tracks and pagination info
  */
-function getAll({ page = 1, limit = 20, search = '' } = {}) {
+function getAll({ page = 1, limit = 20, search = '', sort = '' } = {}) {
   let tracks = getAllTracks();
 
   // Apply search filter if provided
@@ -109,6 +109,13 @@ function getAll({ page = 1, limit = 20, search = '' } = {}) {
         track.trackName.toLowerCase().includes(searchLower) ||
         track.artist.toLowerCase().includes(searchLower) ||
         (track.album && track.album.toLowerCase().includes(searchLower))
+    );
+  }
+
+  // Sort by newest first when requested
+  if (sort === 'newest') {
+    tracks = [...tracks].sort((a, b) =>
+      new Date(b.createdAt).getTime() - new Date(a.createdAt).getTime()
     );
   }
 

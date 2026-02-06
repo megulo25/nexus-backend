@@ -45,8 +45,9 @@ router.get('/', (req, res) => {
   try {
     const { page, limit } = parsePaginationParams(req.query);
     const search = req.query.search || '';
+    const sort = req.query.sort || '';
 
-    const result = getAll({ page, limit, search });
+    const result = getAll({ page, limit, search, sort });
 
     res.json({
       success: true,
