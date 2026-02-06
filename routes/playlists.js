@@ -19,7 +19,7 @@ const {
   removeTrack,
   isOwner,
 } = require('../models/playlistStore');
-const { findById: findTrackById, findByIds } = require('../models/trackStore');
+const { findById: findTrackById, findByIds, withFileSizes } = require('../models/trackStore');
 const { parsePaginationParams, paginate } = require('../utils/pagination');
 
 const router = express.Router();
@@ -116,7 +116,7 @@ router.get('/:id', (req, res) => {
         trackCount: playlist.trackIds.length,
         createdAt: playlist.createdAt,
         updatedAt: playlist.updatedAt,
-        tracks: paginatedTracks.data,
+        tracks: withFileSizes(paginatedTracks.data),
       },
       trackPagination: paginatedTracks.pagination,
     });

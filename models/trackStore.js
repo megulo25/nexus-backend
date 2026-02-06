@@ -1,7 +1,49 @@
 const fs = require('fs');
 const path = require('path');
 
+const config = require('../config');
+
 const TRACKS_FILE = path.join(__dirname, '..', 'data', 'tracks.json');
+
+/**
+ * Get the file size for a track
+ * @param {Object} track - Track object with filePath
+ * @returns {number|null} File size in bytes, or null if file doesn't exist
+ */
+function getTrackFileSize(track) {
+  if (!track || !track.filePath) {
+    return null;
+  }
+  try {
+    const filePath = path.join(config.paths.songs, track.filePath);
+    const stat = fs.statSync(filePath);
+    return stat.size;
+  } catch (err) {
+    return null;
+  }
+}
+
+/**
+ * Add fileSize to a track object
+ * @param {Object} track - Track object
+ * @returns {Object} Track with fileSize property
+ */
+function withFileSize(track) {
+  if (!track) return null;
+  return {
+    ...track,
+    fileSize: getTrackFileSize(track),
+  };
+}
+
+/**
+ * Add fileSize to an array of tracks
+ * @param {Array} tracks - Array of track objects
+ * @returns {Array} Tracks with fileSize property
+ */
+function withFileSizes(tracks) {
+  return tracks.map(withFileSize);
+}
 
 /**
  * Read all tracks from the JSON file
@@ -160,4 +202,7 @@ module.exports = {
   findByArtistAndName,
   addTrack,
   addTracks,
+  getTrackFileSize,
+  withFileSize,
+  withFileSizes,
 };

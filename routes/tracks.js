@@ -5,7 +5,7 @@ const mime = require('mime-types');
 
 const config = require('../config');
 const { authenticateToken } = require('../middleware/authMiddleware');
-const { findById, getAll } = require('../models/trackStore');
+const { findById, getAll, withFileSize, withFileSizes } = require('../models/trackStore');
 const { parsePaginationParams } = require('../utils/pagination');
 
 const router = express.Router();
@@ -27,7 +27,7 @@ router.get('/', (req, res) => {
 
     res.json({
       success: true,
-      data: result.data,
+      data: withFileSizes(result.data),
       pagination: result.pagination,
     });
   } catch (err) {
@@ -62,7 +62,7 @@ router.get('/:id', (req, res) => {
 
     res.json({
       success: true,
-      data: track,
+      data: withFileSize(track),
     });
   } catch (err) {
     console.error('Error fetching track:', err);
