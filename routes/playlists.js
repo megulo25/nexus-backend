@@ -90,7 +90,7 @@ router.get('/:id', (req, res) => {
 
     // Parse track pagination params
     const page = parseInt(req.query.page, 10) || 1;
-    const limit = Math.min(parseInt(req.query.limit, 10) || 50, 100);
+    const limit = Math.min(parseInt(req.query.limit, 10) || 50, 1000);
     const search = (req.query.search || '').trim().toLowerCase();
     const sort = (req.query.sort || '').trim().toLowerCase();
 

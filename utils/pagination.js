@@ -36,7 +36,7 @@ function parsePaginationParams(query, defaults = {}) {
   const {
     page: defaultPage = 1,
     limit: defaultLimit = 20,
-    maxLimit = 100,
+    maxLimit = 1000,
   } = defaults;
 
   let page = parseInt(query.page, 10);
