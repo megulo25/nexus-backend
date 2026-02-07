@@ -40,7 +40,7 @@ function sanitizeFilename(name) {
  * @returns {string} The formatted filename
  */
 function buildTrackFilename(artist, trackName) {
-  return `${sanitizeFilename(artist)}-${sanitizeFilename(trackName)}.m4a`;
+  return `${sanitizeFilename(artist)}-${sanitizeFilename(trackName)}.m4a`.normalize('NFC');
 }
 
 module.exports = { sanitizeFilename, buildTrackFilename };
