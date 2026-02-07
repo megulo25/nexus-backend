@@ -92,9 +92,19 @@ router.get('/:id', (req, res) => {
     const page = parseInt(req.query.page, 10) || 1;
     const limit = Math.min(parseInt(req.query.limit, 10) || 50, 100);
     const search = (req.query.search || '').trim().toLowerCase();
+    const sort = (req.query.sort || '').trim().toLowerCase();
 
     // Get all tracks for this playlist
     const allTracks = findByIds(playlist.trackIds);
+
+    // Sort tracks before filtering/paginating
+    if (sort === 'name_asc') {
+      allTracks.sort((a, b) => a.trackName.localeCompare(b.trackName, undefined, { sensitivity: 'base' }));
+    } else if (sort === 'name_desc') {
+      allTracks.sort((a, b) => b.trackName.localeCompare(a.trackName, undefined, { sensitivity: 'base' }));
+    } else if (sort === 'newest') {
+      allTracks.sort((a, b) => new Date(b.createdAt).getTime() - new Date(a.createdAt).getTime());
+    }
 
     // Filter tracks by search query (case-insensitive match on trackName or artist)
     const filteredTracks = search
