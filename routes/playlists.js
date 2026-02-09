@@ -6,6 +6,7 @@ const { body, validationResult } = require('express-validator');
 const { v4: uuidv4 } = require('uuid');
 
 const config = require('../config');
+const { resolveTrackPath } = require('../utils/resolveTrackPath');
 const { authenticateToken } = require('../middleware/authMiddleware');
 const {
   findById,
@@ -540,10 +541,10 @@ router.get('/:id/download', (req, res) => {
         continue;
       }
 
-      const filePath = path.join(config.paths.songs, track.filePath);
+      const filePath = resolveTrackPath(config.paths.songs, track.filePath);
 
-      if (!fs.existsSync(filePath)) {
-        console.warn(`File not found for track ${track.id}: ${filePath}`);
+      if (!filePath) {
+        console.warn(`File not found for track ${track.id}: ${track.filePath}`);
         continue;
       }
 

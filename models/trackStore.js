@@ -2,6 +2,7 @@ const fs = require('fs');
 const path = require('path');
 
 const config = require('../config');
+const { resolveTrackPath } = require('../utils/resolveTrackPath');
 
 const TRACKS_FILE = path.join(__dirname, '..', 'data', 'tracks.json');
 
@@ -15,7 +16,8 @@ function getTrackFileSize(track) {
     return null;
   }
   try {
-    const filePath = path.join(config.paths.songs, track.filePath);
+    const filePath = resolveTrackPath(config.paths.songs, track.filePath);
+    if (!filePath) return null;
     const stat = fs.statSync(filePath);
     return stat.size;
   } catch (err) {

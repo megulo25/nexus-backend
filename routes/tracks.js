@@ -12,6 +12,7 @@ const { authenticateToken } = require('../middleware/authMiddleware');
 const { findById, getAll, addTrack, findByArtistAndName, withFileSize, withFileSizes } = require('../models/trackStore');
 const { parsePaginationParams } = require('../utils/pagination');
 const { sanitizeFilename, buildTrackFilename } = require('../utils/sanitize');
+const { resolveTrackPath } = require('../utils/resolveTrackPath');
 
 const execFileAsync = promisify(execFile);
 
@@ -128,10 +129,10 @@ router.get('/:id/stream', (req, res) => {
       });
     }
 
-    const filePath = path.join(config.paths.songs, track.filePath);
+    const filePath = resolveTrackPath(config.paths.songs, track.filePath);
 
-    // Check if file exists
-    if (!fs.existsSync(filePath)) {
+    // Check if file exists (handles Unicode NFC/NFD normalization)
+    if (!filePath) {
       return res.status(404).json({
         success: false,
         error: {
@@ -227,10 +228,10 @@ router.get('/:id/download', (req, res) => {
       });
     }
 
-    const filePath = path.join(config.paths.songs, track.filePath);
+    const filePath = resolveTrackPath(config.paths.songs, track.filePath);
 
-    // Check if file exists
-    if (!fs.existsSync(filePath)) {
+    // Check if file exists (handles Unicode NFC/NFD normalization)
+    if (!filePath) {
       return res.status(404).json({
         success: false,
         error: {

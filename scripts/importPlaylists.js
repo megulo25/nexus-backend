@@ -53,7 +53,7 @@ const PLAYLISTS_DIR = config.paths.playlists;
 function normalizeTrack(sourceTrack) {
   // Extract just the filename from local_path
   const filePath = sourceTrack.local_path
-    ? path.basename(sourceTrack.local_path)
+    ? path.basename(sourceTrack.local_path).normalize('NFC')
     : null;
 
   return {
