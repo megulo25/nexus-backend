@@ -252,7 +252,7 @@ The easiest way to import playlists from Spotify is the unified migration script
 ./migrate.sh
 ```
 
-It handles the entire pipeline interactively — YouTube download, duration updates, file copying, and backend import — in one step. See the [search module README](../search/README.md) for details.
+Place your Spotify CSV exports in `search/spotify_playlists/{username}/` (the directory name must match a backend username), then run the script. It processes all CSVs in the directory as playlists for that user — handling YouTube download, duration updates, file copying, and backend import in one step. See the [search module README](../search/README.md) for details.
 
 <details>
 <summary>Manual import (advanced)</summary>
