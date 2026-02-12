@@ -17,7 +17,7 @@ const { v4: uuidv4 } = require('uuid');
 // ============================================
 const users = [
   { username: 'megulo25', password: 'my_very_unsafe_password_123_456_7890' },
-  { username: 'USER_2', password: 'change_this_password_2' },
+  { username: 'matthews', password: 'matthews_abebe_password_123_321_42396_26' },
   { username: 'USER_3', password: 'change_this_password_3' },
   { username: 'USER_4', password: 'change_this_password_4' },
   { username: 'USER_5', password: 'change_this_password_5' },

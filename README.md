@@ -243,6 +243,56 @@ Creates initial user accounts. Edit `scripts/seedUsers.js` to configure users.
 ### `yarn import:playlists`
 Imports playlists from JSON files in the `playlists/{username}/` directory. Each JSON file should contain an array of track objects with metadata.
 
+#### Importing from the Search Module
+
+The easiest way to import playlists from Spotify is the unified migration script at the project root:
+
+```bash
+# From the project root
+./migrate.sh
+```
+
+It handles the entire pipeline interactively — YouTube download, duration updates, file copying, and backend import — in one step. See the [search module README](../search/README.md) for details.
+
+<details>
+<summary>Manual import (advanced)</summary>
+
+```bash
+# 1. Copy the playlist JSON to the user's playlist directory
+cp ../search/playlists/My_Playlist.json playlists/{username}/My_Playlist.json
+
+# 2. Copy audio files (no-clobber to preserve existing)
+cp -n ../search/songs/*.m4a songs/
+
+# 3. Run the import
+yarn import:playlists
+```
+</details>
+
+The import script automatically:
+- Transforms `snake_case` fields to `camelCase` (`track_name` → `trackName`, etc.)
+- Parses `duration_ms` from string to integer
+- Extracts filename from `local_path` for the `filePath` field
+- Generates UUID `id` and `createdAt` timestamp for new tracks
+- Deduplicates by artist + track name (case-insensitive)
+- Creates a new playlist (or merges into existing) named after the JSON file
+
+#### Expected Source JSON Format
+
+```json
+[
+  {
+    "track_name": "Song Title",
+    "artist": "Artist Name",
+    "album": "Album Name",
+    "release_date": "2024-01-15",
+    "duration_ms": "234567",
+    "url": "https://www.youtube.com/watch?v=abc123",
+    "local_path": "songs/Artist_Name-Song_Title.m4a"
+  }
+]
+```
+
 ## Security Features
 
 - **Helmet**: Sets secure HTTP headers

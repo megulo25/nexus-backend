@@ -4,5 +4,11 @@
     "username": "megulo25",
     "passwordHash": "$2b$12$S4WI.DIAmwenmtinHah6gOLm8y5fiVCrX2zPUM/IQrjJ4I4LD8bIy",
     "createdAt": "2026-02-04T10:45:47.007Z"
+  },
+  {
+    "id": "09e6e4f3-fdc4-4998-a920-5799d54a0d56",
+    "username": "matthews",
+    "passwordHash": "$2b$12$.y.yrHZboeLAljKM5pIuaeSiKSfM9UuiB6hI3.QEZKgWS.oWtOjam",
+    "createdAt": "2026-02-08T07:11:58.747Z"
   }
 ]
