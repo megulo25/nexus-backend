@@ -56,6 +56,23 @@ function normalizeTrack(sourceTrack) {
     ? path.basename(sourceTrack.local_path).normalize('NFC')
     : null;
 
+  // Extract thumbnail filename from thumbnail_path, or derive from URL
+  let thumbnailPath = null;
+  if (sourceTrack.thumbnail_path) {
+    thumbnailPath = path.basename(sourceTrack.thumbnail_path).normalize('NFC');
+  } else if (sourceTrack.url) {
+    // Derive from YouTube URL: extract video ID
+    try {
+      const parsed = new URL(sourceTrack.url);
+      const videoId = parsed.searchParams.get('v');
+      if (videoId) {
+        thumbnailPath = `${videoId}.jpg`;
+      }
+    } catch {
+      // Invalid URL, leave thumbnailPath null
+    }
+  }
+
   return {
     id: uuidv4(),
     trackName: sourceTrack.track_name,
@@ -65,6 +82,7 @@ function normalizeTrack(sourceTrack) {
     durationMs: parseInt(sourceTrack.duration_ms, 10) || null,
     sourceUrl: sourceTrack.url || null,
     filePath,
+    thumbnailPath,
     createdAt: new Date().toISOString(),
   };
 }

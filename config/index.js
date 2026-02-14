@@ -21,5 +21,6 @@ module.exports = {
   paths: {
     songs: path.resolve(process.env.SONGS_PATH || './songs'),
     playlists: path.resolve(process.env.PLAYLISTS_PATH || './playlists'),
+    thumbnails: path.resolve(process.env.THUMBNAILS_PATH || './thumbnails'),
   },
 };

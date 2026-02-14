@@ -271,6 +271,67 @@ router.get('/:id/download', (req, res) => {
 });
 
 /**
+ * GET /tracks/:id/thumbnail
+ * Serve the track's YouTube thumbnail image
+ */
+router.get('/:id/thumbnail', (req, res) => {
+  try {
+    const track = findById(req.params.id);
+
+    if (!track) {
+      return res.status(404).json({
+        success: false,
+        error: {
+          code: 'TRACK_NOT_FOUND',
+          message: 'Track not found',
+        },
+      });
+    }
+
+    if (!track.thumbnailPath) {
+      return res.status(404).json({
+        success: false,
+        error: {
+          code: 'THUMBNAIL_NOT_FOUND',
+          message: 'Thumbnail not available for this track',
+        },
+      });
+    }
+
+    const filePath = resolveTrackPath(config.paths.thumbnails, track.thumbnailPath);
+
+    if (!filePath) {
+      return res.status(404).json({
+        success: false,
+        error: {
+          code: 'THUMBNAIL_NOT_FOUND',
+          message: 'Thumbnail file not found on server',
+        },
+      });
+    }
+
+    const stat = fs.statSync(filePath);
+
+    res.writeHead(200, {
+      'Content-Type': 'image/jpeg',
+      'Content-Length': stat.size,
+      'Cache-Control': 'public, max-age=604800', // 1 week — thumbnails don't change
+    });
+
+    fs.createReadStream(filePath).pipe(res);
+  } catch (err) {
+    console.error('Error serving thumbnail:', err);
+    res.status(500).json({
+      success: false,
+      error: {
+        code: 'INTERNAL_ERROR',
+        message: 'Failed to serve thumbnail',
+      },
+    });
+  }
+});
+
+/**
  * POST /tracks/import
  * Import a track from a YouTube URL using yt-dlp.
  * Downloads audio as m4a, extracts metadata, and adds to the library.
