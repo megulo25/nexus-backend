@@ -10,5 +10,11 @@
     "username": "matthews",
     "passwordHash": "$2b$12$.y.yrHZboeLAljKM5pIuaeSiKSfM9UuiB6hI3.QEZKgWS.oWtOjam",
     "createdAt": "2026-02-08T07:11:58.747Z"
+  },
+  {
+    "id": "ba1e9878-3547-4470-9141-ee35210e46f1",
+    "username": "vanessa",
+    "passwordHash": "$2b$12$LTGQISJB3/3scj5IwMTWl.fLRDGor1pWGsgpP4zNrAaDSe1tLnylq",
+    "createdAt": "2026-02-17T20:34:19.244Z"
   }
 ]
